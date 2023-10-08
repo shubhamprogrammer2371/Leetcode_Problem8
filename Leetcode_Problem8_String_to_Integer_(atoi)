@@ -1,0 +1,71 @@
+int myAtoi(char * s){
+    if(strtol(s,NULL,10) > INT_MAX)
+        return INT_MAX;
+    else if(strtol(s,NULL,10) <= INT_MIN)
+        return INT_MIN;
+    else
+        return strtol(s,NULL,10);
+}
+
+
+
+---------------------------------------------------------------
+
+
+
+int myAtoi(char *s) {
+    int n_digits = 0 , neg = 0;
+
+    
+    if (*s == ' ')  // Drop whitespaces
+        return myAtoi(s+1);
+
+    // Sign check
+    if (*s == '-') 
+    {
+        neg = 1;
+        s++;
+    }
+    else if(*s == '+') 
+        s++;    
+    while (*s == '0')  // Check for leading zeros
+        s++;
+    // Count digits
+    for (char *p = s; *p; ++p)
+    {
+        if (*p < '0' || *p > '9')
+            break;
+        n_digits++;
+    }
+
+    if (n_digits == 0)// Not a number
+        return 0;
+    else if (n_digits > 10)// Number out of bounds
+        return (neg) ? INT_MIN : INT_MAX;
+    else
+    {
+        long long int sum = 0LL;
+        
+        for (int i = 0; i < n_digits; ++i)
+        {
+            sum = sum * 10 + (s[i] - '0');
+            if (n_digits == 10) 
+            {
+                if (!neg && (sum > INT_MAX)) 
+                    return INT_MAX;
+                if (neg && (-sum < INT_MIN))
+                    return INT_MIN;
+            }
+        }
+        return (neg) ? (-sum) : (sum);
+    }
+}
+
+
+
+--------------------------------------------------------------------------------------------------
+
+// Not valid for integer value bound ranges (beyond INT_MAX , INT_MIN)
+int myAtoi(char *s) {
+    return atoi(s);
+}
